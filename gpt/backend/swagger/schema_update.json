@@ -1,0 +1,49 @@
+{
+    "title": "MachineUpdate",
+    "type": "object",
+    "properties": {
+        "name": {
+            "title": "Name",
+            "type": "string"
+        },
+        "role": {
+            "title": "Role",
+            "type": "string"
+        },
+        "location": {
+            "title": "Location",
+            "type": "string"
+        },
+        "email": {
+            "title": "Email",
+            "type": "string",
+            "format": "email"
+        },
+        "number": {
+            "title": "Number",
+            "type": "integer"
+        },
+        "float_number": {
+            "title": "Float Number",
+            "type": "number"
+        },
+        "enum": {
+            "title": "Enum",
+            "type": "boolean"
+        },
+        "password": {
+            "title": "Password",
+            "type": "string"
+        }
+    },
+    "required": [
+        "name",
+        "role",
+        "location",
+        "email",
+        "number",
+        "float_number",
+        "enum",
+        "password"
+    ]
+}

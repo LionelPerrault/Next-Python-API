@@ -1,0 +1,151 @@
+openapi: 3.0.0
+info:
+  title: Machine API
+  version: 1.0.0
+servers:
+- url: /
+paths:
+  /machine/create:
+    post:
+      summary: Create a new machine
+      operationId: machine_create_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MachineCreate'
+        required: true
+      responses:
+        "200":
+          description: Machine created successfully
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /machine/get:
+    get:
+      summary: Get machine
+      operationId: machine_get_get
+      parameters:
+      - name: id
+        in: query
+        description: The id of the machine to retrieve
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+      - name: email
+        in: query
+        description: The email of the machine to retrieve
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+          format: email
+      responses:
+        "200":
+          description: A list of machines
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MachineRead'
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /machine/update:
+    put:
+      summary: Update a machine
+      operationId: machine_update_put
+      parameters:
+      - name: machine_id
+        in: query
+        description: The id of the machine to update
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MachineUpdate'
+        required: true
+      responses:
+        "200":
+          description: Machine updated successfully
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+  /machine/schema/{method}:
+    get:
+      summary: "Get the JSON schema for create/update, see below"
+      operationId: machine_schema_method_get
+      parameters:
+      - name: method
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+          enum:
+          - update
+          - create
+      responses:
+        "200":
+          description: The JSON schema of the selected method
+          content:
+            application/json:
+              schema:
+                type: object
+                x-content-type: application/json
+      x-openapi-router-controller: swagger_server.controllers.default_controller
+components:
+  schemas:
+    MachineBase:
+      type: object
+      properties:
+        name:
+          maxLength: 10
+          type: string
+        location:
+          type: string
+        email:
+          type: string
+          format: email
+        number:
+          type: integer
+        float_number:
+          type: number
+        enum:
+          type: string
+          enum:
+          - active
+          - not_active
+    MachineCreate:
+      allOf:
+      - $ref: '#/components/schemas/MachineBase'
+      - type: object
+        properties:
+          password:
+            type: string
+    MachineUpdate:
+      allOf:
+      - $ref: '#/components/schemas/MachineBase'
+      - type: object
+        properties:
+          password:
+            type: string
+    MachineRead:
+      allOf:
+      - $ref: '#/components/schemas/MachineBase'
+      - type: object
+        properties:
+          id:
+            type: integer
+          created_at:
+            type: string
+            format: date-time
+          edited_at:
+            type: string
+            format: date-time
+

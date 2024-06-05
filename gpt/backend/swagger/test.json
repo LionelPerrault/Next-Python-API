@@ -1,0 +1,404 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Machine API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/machine/create": {
+            "post": {
+                "summary": "Create a new machine",
+                "description": "Create a new machine.",
+                "operationId": "create_machine_machine_create_post",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MachineCreate"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/machine/get": {
+            "get": {
+                "summary": "Get a machine by ID",
+                "description": "Get a machine by its ID.",
+                "operationId": "get_machine_machine_get_get",
+                "parameters": [
+                    {
+                        "description": "The id of the machine to retrieve",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Id",
+                            "description": "The id of the machine to retrieve"
+                        },
+                        "name": "id",
+                        "in": "query"
+                    },
+                    {
+                        "description": "The email of the machine to retreive",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "title": "Email",
+                            "description": "The email of the machine to retreive"
+                        },
+                        "name": "email",
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MachineRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/machines/update": {
+            "put": {
+                "summary": "Update a machine",
+                "description": "Update a machine by its ID.",
+                "operationId": "update_machine_machines_update_put",
+                "parameters": [
+                    {
+                        "description": "The id of the machine to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "title": "Machine Id",
+                            "description": "The id of the machine to update"
+                        },
+                        "name": "machine_id",
+                        "in": "query"
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/MachineUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MachineRead"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/machine/schema/{method}": {
+            "get": {
+                "summary": "Get Schema",
+                "operationId": "get_schema_machine_schema__method__get",
+                "parameters": [
+                    {
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "title": "Method"
+                        },
+                        "name": "method",
+                        "in": "path"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation Error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/HTTPValidationError"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/openapi.yaml": {
+            "get": {
+                "summary": "Get the OpenAPI specification",
+                "description": "Get the OpenAPI specification in YAML format.",
+                "operationId": "get_openapi_yaml_openapi_yaml_get",
+                "responses": {
+                    "200": {
+                        "description": "Successful Response",
+                        "content": {
+                            "application/json": {
+                                "schema": {}
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "HTTPValidationError": {
+                "properties": {
+                    "detail": {
+                        "items": {
+                            "$ref": "#/components/schemas/ValidationError"
+                        },
+                        "type": "array",
+                        "title": "Detail"
+                    }
+                },
+                "type": "object",
+                "title": "HTTPValidationError"
+            },
+            "MachineCreate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email"
+                    },
+                    "number": {
+                        "type": "integer",
+                        "title": "Number"
+                    },
+                    "floatNumber": {
+                        "type": "number",
+                        "title": "Floatnumber"
+                    },
+                    "enum": {
+                        "$ref": "#/components/schemas/MachineStatus"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "location",
+                    "email",
+                    "number",
+                    "floatNumber",
+                    "enum",
+                    "password"
+                ],
+                "title": "MachineCreate"
+            },
+            "MachineRead": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email"
+                    },
+                    "number": {
+                        "type": "integer",
+                        "title": "Number"
+                    },
+                    "floatNumber": {
+                        "type": "number",
+                        "title": "Floatnumber"
+                    },
+                    "enum": {
+                        "$ref": "#/components/schemas/MachineStatus"
+                    },
+                    "id": {
+                        "type": "integer",
+                        "title": "Id"
+                    },
+                    "createdAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Createdat"
+                    },
+                    "editedAt": {
+                        "type": "string",
+                        "format": "date-time",
+                        "title": "Editedat"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "location",
+                    "email",
+                    "number",
+                    "floatNumber",
+                    "enum",
+                    "id",
+                    "createdAt",
+                    "editedAt"
+                ],
+                "title": "MachineRead"
+            },
+            "MachineStatus": {
+                "type": "string",
+                "enum": [
+                    "active",
+                    "not_active"
+                ],
+                "title": "MachineStatus",
+                "description": "An enumeration."
+            },
+            "MachineUpdate": {
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "title": "Name"
+                    },
+                    "location": {
+                        "type": "string",
+                        "title": "Location"
+                    },
+                    "email": {
+                        "type": "string",
+                        "format": "email",
+                        "title": "Email"
+                    },
+                    "number": {
+                        "type": "integer",
+                        "title": "Number"
+                    },
+                    "floatNumber": {
+                        "type": "number",
+                        "title": "Floatnumber"
+                    },
+                    "enum": {
+                        "$ref": "#/components/schemas/MachineStatus"
+                    },
+                    "password": {
+                        "type": "string",
+                        "title": "Password"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "name",
+                    "location",
+                    "email",
+                    "number",
+                    "floatNumber",
+                    "enum",
+                    "password"
+                ],
+                "title": "MachineUpdate"
+            },
+            "ValidationError": {
+                "properties": {
+                    "loc": {
+                        "items": {
+                            "anyOf": [
+                                {
+                                    "type": "string"
+                                },
+                                {
+                                    "type": "integer"
+                                }
+                            ]
+                        },
+                        "type": "array",
+                        "title": "Location"
+                    },
+                    "msg": {
+                        "type": "string",
+                        "title": "Message"
+                    },
+                    "type": {
+                        "type": "string",
+                        "title": "Error Type"
+                    }
+                },
+                "type": "object",
+                "required": [
+                    "loc",
+                    "msg",
+                    "type"
+                ],
+                "title": "ValidationError"
+            }
+        }
+    }
+}
