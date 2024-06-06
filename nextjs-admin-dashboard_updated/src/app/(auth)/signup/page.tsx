@@ -9,63 +9,69 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 
 const SignUp: React.FC = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     try {
+      const formData = new FormData(e.currentTarget);
+      const userCreated = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`,
+        {
+          name: formData.get("name"),
+          email: formData.get("email"),
+          password: formData.get("password"),
+          role: "user",
+          location: "United States",
+          number: 99999,
+          age: 18,
+        },
+      );
 
-      const formData = new FormData(e.currentTarget)
-      const userCreated = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/signup`, {
-        name: formData.get("name"),
-        email: formData.get("email"),
-        password: formData.get("password"),
-        role:"user",
-        location: "United States",
-        number: 99999,
-        age: 18,
-      })
-
+      toast.success(
+        "Signup successful! Please check your email to verify your account.",
+      );
+      router.push("/signin");
+      /*
       const res = await signIn("credentials", {
         email: formData.get("email")?.toString().toLowerCase(),
         password: formData.get("password"),
-        redirect: false
-      })
+        redirect: false,
+      });
       if (res && res.ok) {
-        router.push("/dashboard")
+        router.push("/dashboard");
       } else {
-        toast.error("Incorrect email or password")
-        setLoading(false)
-      }
+        toast.error("Incorrect email or password");
+        setLoading(false);
+      }*/
     } catch (error) {
-      toast.error("Something went wrong")
-      console.log(error)
+      toast.error("Something went wrong");
+      console.log(error);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   }
 
   return (
-    <div className="h-screen overflow-hidden items-center ">
-      <div className="rounded-sm border border-stroke bg-white shadow-default">
-        <div className="flex flex-wrap items-center my-5">
+    <div className="flex h-screen items-center overflow-hidden">
+      <div className="w-full rounded-sm border border-stroke bg-white shadow-default">
+        <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
               <Link className="mb-5.5 inline-block" href="/">
                 <Image
-                  src={"/images/logo/logo .png"}
+                  src={"/images/logo/logo.png"}
                   alt="Logo"
                   width={176}
                   height={32}
                 />
               </Link>
-              <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
-              </p>
+              <h2 className="text-2xl font-bold sm:text-title-xl2">
+                Sign up to Avas
+              </h2>
 
               <span className="mt-15 inline-block">
                 <svg
@@ -196,7 +202,7 @@ const SignUp: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
-                Sign Up to Admin
+                Sign Up
               </h2>
 
               <form onSubmit={onSubmit}>

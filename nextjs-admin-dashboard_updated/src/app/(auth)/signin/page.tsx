@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { FormEvent, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -8,30 +8,33 @@ import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
 
 const SignIn: React.FC = () => {
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
 
-  const router = useRouter()
+  const router = useRouter();
 
   async function onSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    setLoading(true)
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    setLoading(true);
     const res = await signIn("credentials", {
       email: formData.get("email")?.toString().toLowerCase(),
       password: formData.get("password"),
-      redirect: false
-    })
+      redirect: false,
+    });
     if (res && res.ok) {
-      router.push("/dashboard")
+      router.push("/dashboard");
     } else {
-      toast.error("Incorrect email or password")
-      setLoading(false)
+      console.log(res?.error);
+      if (res?.status === 403)
+        toast.error("Email not verified. Please check your email.");
+      else toast.error("Incorrect email or password");
+      setLoading(false);
     }
   }
 
   return (
-    <div className="flex h-screen overflow-hidden items-center">
-      <div className="rounded-sm w-full border border-stroke bg-white shadow-default">
+    <div className="flex h-screen items-center overflow-hidden">
+      <div className="w-full rounded-sm border border-stroke bg-white shadow-default">
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
@@ -44,10 +47,10 @@ const SignIn: React.FC = () => {
                 />
               </Link>
 
-              <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
-              </p>
+              {/* <p className="2xl:px-20">Sign in to Avas</p> */}
+              <h2 className="text-2xl font-bold sm:text-title-xl2">
+                Sign in to Avas
+              </h2>
 
               <span className="mt-15 inline-block">
                 <svg
@@ -178,7 +181,7 @@ const SignIn: React.FC = () => {
             <div className="w-full p-4 sm:p-12.5 xl:p-17.5">
               <span className="mb-1.5 block font-medium">Start for free</span>
               <h2 className="mb-9 text-2xl font-bold text-black sm:text-title-xl2">
-                Sign In to Admin
+                Sign In
               </h2>
 
               <form onSubmit={onSubmit}>
@@ -227,7 +230,7 @@ const SignIn: React.FC = () => {
                       required
                       disabled={loading}
                       placeholder="Enter your password"
-                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 dark:text-white outline-none focus:border-primary focus-visible:shadow-none"
+                      className="w-full rounded-lg border border-stroke bg-transparent py-4 pl-6 pr-10 outline-none focus:border-primary focus-visible:shadow-none dark:text-white"
                     />
 
                     <span className="absolute right-4 top-4">

@@ -75,3 +75,15 @@
     @apply bg-background text-foreground;
   }
 }
+
+.border-red-500 {
+  border-color: #cd1919;
+}
+
+.text-red-500 {
+  color: #cd1919;
+}
+
+.text-green-500 {
+  color: #206920;
+}
