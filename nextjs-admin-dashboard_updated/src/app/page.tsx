@@ -1,13 +1,15 @@
-import Hero from "@/components/LandingPage/Hero";
 import Navbar from "@/components/LandingPage/Navbar";
+import SignIn from "./(auth)/signin/page";
+import Footer from "@/components/LandingPage/Footer";
 
 const LandingPage = () => {
-    return (
-        <div>
-            <Navbar />
-            <Hero />
-        </div>
-    );
-}
+  return (
+    <div>
+      <Navbar />
+      <SignIn />
+      {/* <Footer /> */}
+    </div>
+  );
+};
 
 export default LandingPage;

@@ -1,3 +1,4 @@
+import Navbar from "@/components/LandingPage/Navbar";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -6,12 +7,13 @@ export const metadata: Metadata = {
   // other metadata
 };
 
-const AuthLayout = ({children}:{children:React.ReactNode}) => {
-    return (
-        <div>
-            {children}
-        </div>
-    );
-}
+const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div>
+      <Navbar />
+      {children}
+    </div>
+  );
+};
 
 export default AuthLayout;

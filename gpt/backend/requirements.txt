@@ -19,3 +19,4 @@ networkx
 pandas
 openpyxl
 chromadb
+sendgrid

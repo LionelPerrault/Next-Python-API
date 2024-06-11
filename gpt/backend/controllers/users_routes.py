@@ -40,24 +40,40 @@ def get_all_users():
         print(e)
         return jsonify({"error": str(e)}), 500
 
-
+def convert_objectid(data):
+    if isinstance(data, list):
+        return [convert_objectid(item) for item in data]
+    elif isinstance(data, dict):
+        return {key: convert_objectid(value) for key, value in data.items()}
+    elif isinstance(data, ObjectId):
+        return str(data)
+    else:
+        return data
+    
 @users_blueprint.route("/cards", methods=["GET"])
 def cards():
     try:
         user_id = request.headers.get("Authorization")
         users = list(db.users.find({"role": "user"}))
+        valid_users = []
+        # print("length >>", len(users))
         for user in users:
             user["_id"] = str(user["_id"])
             latest_chat = db.chats.find_one(
                 {"sender": user["_id"], "receiver": "gpt"}, sort=[("created_at", -1)]
             )
+            # print("latest_chat >>", latest_chat)
+
             if not latest_chat:
-                users.remove(user)
                 continue
             user["time"] = latest_chat["created_at"]
-            user["type"] = 4 if user_id in latest_chat["read_by"] else 1
+            user["type"] = 4 if ObjectId(user_id) in latest_chat.get("read_by", []) else 1
+            valid_users.append(user)
 
-        return jsonify(users), 200
+        # print(valid_users)
+
+        valid_users = convert_objectid(valid_users)
+        return jsonify(valid_users), 200
     except Exception as e:
         print(e)
         return jsonify({"error": str(e)}), 500
