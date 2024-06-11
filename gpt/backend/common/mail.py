@@ -12,14 +12,27 @@ def send_verification_email(to_email, verification_link):
         subject='Verify your email address',
         html_content=f'Please click the following link to verify your email address: <a href="{verification_link}">{verification_link}</a>'
     )
+
     try:
-        sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+        print("SendGrid starts:")
+        sendgrid_api_key = os.environ.get('SENDGRID_API_KEY')
+        if not sendgrid_api_key:
+            raise ValueError("SENDGRID_API_KEY environment variable is not set")
+        
+        print(f"Using API Key: {sendgrid_api_key[:4]}...{sendgrid_api_key[-4:]}")  # Print part of the API key for verification
+
+        print("SendGrid starts:")
+        
+        sg = SendGridAPIClient(sendgrid_api_key)
         response = sg.send(message)
-        print(response.status_code)
-        print(response.body)
-        print(response.headers)
+
+        print(f"Response: {response}")
+        print(f"Status Code: {response.status_code}")
+        print(f"Body: {response.body}")
+        print(f"Headers: {response.headers}")
+
     except Exception as e:
-        print(str(e))
+        print(f"An error occurred: {str(e)}")
 
 # def send_verification_email(to_email, verification_link):
 #     subject = "Verify your email address"

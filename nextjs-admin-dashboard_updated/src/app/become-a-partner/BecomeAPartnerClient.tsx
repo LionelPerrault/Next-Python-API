@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, ChangeEvent, FormEvent } from "react";
+import axios from "axios";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -34,7 +35,7 @@ type FormErrors = {
 };
 
 const BecomeAPartnerClient = () => {
-  const [formValues, setFormValues] = useState<FormValues>({
+  const initialFormValues: FormValues = {
     organization: "",
     missionStatement: "",
     email: "",
@@ -47,7 +48,10 @@ const BecomeAPartnerClient = () => {
     location: "",
     personalContact: "",
     communicationPreference: "",
-  });
+  };
+
+  const [isloading, setIsloading] = useState<boolean | undefined>(false);
+  const [formValues, setFormValues] = useState<FormValues>(initialFormValues);
 
   const [formErrors, setFormErrors] = useState<FormErrors>({
     organization: false,
@@ -100,7 +104,7 @@ const BecomeAPartnerClient = () => {
     setSubmissionMessage(null);
   };
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (checkErrors()) {
@@ -110,8 +114,24 @@ const BecomeAPartnerClient = () => {
       return;
     }
 
-    // Form submission logic
-    setSubmissionMessage("Thank you for your message. It has been sent.");
+    try {
+      setIsloading(true);
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/organizations`,
+        formValues,
+      );
+
+      console.log("formValues >>", formValues);
+      console.log("response >>", response);
+      setSubmissionMessage("Thank you for your message. It has been sent.");
+    } catch (error) {
+      setSubmissionMessage(
+        "Failed to submit the form. Please try again later.",
+      );
+    } finally {
+      setIsloading(false);
+      setFormValues(initialFormValues);
+    }
   };
 
   return (
@@ -317,7 +337,11 @@ const BecomeAPartnerClient = () => {
           <span>E-Mail</span>
         </label>
       </label>
-      <Button type="submit" className="mt-2 max-w-xs rounded-full bg-[#F78DA7]">
+      <Button
+        type="submit"
+        disabled={isloading}
+        className="mt-2 max-w-xs rounded-full bg-[#F78DA7]"
+      >
         Submit
       </Button>
       {submissionMessage && (

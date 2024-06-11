@@ -47,9 +47,11 @@ const SignUp: React.FC = () => {
         toast.error("Incorrect email or password");
         setLoading(false);
       }*/
-    } catch (error) {
-      toast.error("Something went wrong");
-      console.log(error);
+    } catch (error: any) {
+      const errorMsg = error?.response?.data?.error;
+      // console.log(errorMsg);
+      if (errorMsg) toast.error(errorMsg);
+      else toast.error("Something went wrong");
     } finally {
       setLoading(false);
     }

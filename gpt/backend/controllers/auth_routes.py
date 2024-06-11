@@ -26,6 +26,7 @@ def signup():
         if not email or not password or not name:
             return jsonify({"error": "All fields are required"}), 400
         user = db.users.find_one({"email": email})
+
         if user:
             return jsonify({"error": "User already exists"}), 400
 
@@ -49,9 +50,9 @@ def signup():
         )
 
 
-        verification_link = f"http://{AVAS_DOMAIN}/verify-email?token={verification_token}"
+        # verification_link = f"http://{AVAS_DOMAIN}/verify-email?token={verification_token}"
         # verification_link = f"http://localhost:8000/auth/verify-email?token={verification_token}"
-        # verification_link = f"http://localhost:3000/verify-email?token={verification_token}"
+        verification_link = f"http://localhost:3000/verify-email?token={verification_token}"
         send_verification_email(email, verification_link)
 
 
